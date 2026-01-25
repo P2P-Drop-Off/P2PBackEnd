@@ -1,4 +1,4 @@
-package com.p2p.server.P2PWebBackEnd.config;
+package com.p2p.server.p2p_backend.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

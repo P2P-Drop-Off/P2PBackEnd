@@ -1,5 +1,5 @@
-package com.p2p.server.P2PWebBackEnd.repository;
-import com.p2p.server.P2PWebBackEnd.model.User;
+package com.p2p.server.p2p_backend.repository;
+import com.p2p.server.p2p_backend.model.User;
 import com.google.cloud.firestore.*;
 import org.springframework.stereotype.Repository;
 

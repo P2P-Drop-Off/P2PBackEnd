@@ -1,4 +1,4 @@
-package com.p2p.server.P2PWebBackEnd;
+package com.p2p.server.p2p_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.p2p.server.P2PWebBackEnd.model;
+package com.p2p.server.p2p_backend.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.p2p.server.P2PWebBackEnd;
+package com.p2p.server.p2p_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
