@@ -13,6 +13,7 @@ public class Location {
     private String website;
     private String city;
     private String address;
+    private String state;
     private String zip;
     private String[] hours;
 
