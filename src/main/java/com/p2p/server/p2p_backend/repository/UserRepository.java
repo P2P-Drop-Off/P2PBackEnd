@@ -12,7 +12,7 @@ public class UserRepository {
     }
 
     // READ
-    public void printUserById(String userId) throws Exception{
+    public User getUser(String userId) throws Exception{
 
         DocumentSnapshot doc = firestore
                 .collection("users")
@@ -27,11 +27,10 @@ public class UserRepository {
 
         User user = doc.toObject(User.class);
 
-        // In case we lose it
-        user.setId(userId);
-
-        System.out.println("---- USER ----");
+        System.out.println("---- Got User ----");
         System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
+
+        return doc.toObject(User.class);
 
     }
 }
