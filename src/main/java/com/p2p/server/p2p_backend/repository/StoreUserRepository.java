@@ -2,7 +2,6 @@ package com.p2p.server.p2p_backend.repository;
 
 import com.p2p.server.p2p_backend.model.StoreUser;
 import com.google.cloud.firestore.*;
-import com.p2p.server.p2p_backend.model.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -28,12 +27,18 @@ public class StoreUserRepository {
             return null;
         }
 
-        User user = doc.toObject(User.class);
+        StoreUser user = doc.toObject(StoreUser.class);
 
-        System.out.println("---- Got StoreUser ----");
-        System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
+        return user;
 
-        return doc.toObject(StoreUser.class);
+    }
 
+    // DELETE
+    public void deleteStoreUser(String storeUserId) throws Exception{
+        try {
+            firestore.collection("storeUsers").document(storeUserId).delete();
+        } catch (Exception e) {
+            throw new Exception("Failed to delete storeUser with id: " + storeUserId, e);
+        }
     }
 }

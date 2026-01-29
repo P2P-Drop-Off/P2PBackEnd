@@ -29,9 +29,15 @@ public class LocationRepository {
 
         Location location = doc.toObject(Location.class);
 
-        System.out.println("---- Got Item ----");
-        System.out.println("Name: " + location.getName() + " " + location.getAddress());
+        return location;
+    }
 
-        return doc.toObject(Location.class);
+    // DELETE
+    public void deleteLocation(String locationId) throws Exception{
+        try {
+            firestore.collection("locations").document(locationId).delete();
+        } catch (Exception e) {
+            throw new Exception("Failed to delete location with id: " + locationId, e);
+        }
     }
 }
