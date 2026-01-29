@@ -13,16 +13,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.Customizer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+
 @Configuration
 public class P2PConfig {
-    @Value("classpath:secret.json")
-    private Resource privateKey;
+
+    private final Map<String, Object> secrets;
+
+    public P2PConfig(@Value("classpath:secret.json") Resource privateKey) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        this.secrets = mapper.readValue(privateKey.getInputStream(), Map.class);
+    }
 
     // Firestore Bean
     @Bean
@@ -30,9 +39,8 @@ public class P2PConfig {
 
         // read secret.json as Map
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> json = mapper.readValue(privateKey.getInputStream(), Map.class);
 
-        Object firebaseNode = json.get("firebase");
+        Object firebaseNode = secrets.get("firebase");
         byte[] firebaseBytes = mapper.writeValueAsBytes(firebaseNode);
 
         InputStream credentials =
@@ -53,9 +61,8 @@ public class P2PConfig {
     @Bean 
     public UserDetailsService userDetailsService() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> json = mapper.readValue(privateKey.getInputStream(), Map.class);
 
-        Map<String, Object> springNode = (Map<String, Object>) json.get("spring");
+        Map<String, Object> springNode = (Map<String, Object>) secrets.get("spring");
         Map<String, Object> securityNode = (Map<String, Object>) springNode.get("security");
         Map<String, String> userNode = (Map<String, String>) securityNode.get("user");
 
@@ -68,5 +75,17 @@ public class P2PConfig {
                         .roles("USER")
                         .build()
         );
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
     }
 }

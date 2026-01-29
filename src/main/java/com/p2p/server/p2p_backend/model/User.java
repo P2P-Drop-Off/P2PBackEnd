@@ -1,12 +1,11 @@
 package com.p2p.server.p2p_backend.model;
 
+
 import java.util.List;
 import java.time.*;
 
-@Entity
 public class User {
 
-    @Id
     private String id;
 
     private String firstName;

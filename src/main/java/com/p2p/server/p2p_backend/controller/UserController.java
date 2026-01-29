@@ -4,10 +4,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import com.p2p.server.p2p_backend.repository.UserRepository;
 import com.p2p.server.p2p_backend.service.UserService;
-import java.util.hashMap;
 import com.p2p.server.p2p_backend.model.User;
 
 @RestController
@@ -33,10 +34,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/post/{id}")
-    public String newUser(@PathVariable HashMap<String, String> data) throws Exception {
-        System.out.println("data", data);
-        service.setUser();
-        return "bl";
+    @PostMapping("/post")
+    public ResponseEntity<User> newUser(@RequestBody User user) throws Exception {
+        User createdUser = service.createUser(user);
+        return ResponseEntity.ok(createdUser);
     }
 }
+

@@ -22,7 +22,7 @@ public class UserRepository {
 
         if (!doc.exists()) {
             System.out.println("User not found: " + userId);
-            return;
+            return null;
         }
 
         User user = doc.toObject(User.class);
@@ -32,5 +32,20 @@ public class UserRepository {
 
         return doc.toObject(User.class);
 
+    }
+
+    // CREATE
+    public User createUser(User user) throws Exception {
+        DocumentReference docRef = firestore.collection("users").document();
+        String userId = docRef.getId();
+        user.setId(userId);
+        
+        docRef.set(user).get();
+        
+        System.out.println("---- Created User ----");
+        System.out.println("ID: " + userId);
+        System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
+        
+        return user;
     }
 }
