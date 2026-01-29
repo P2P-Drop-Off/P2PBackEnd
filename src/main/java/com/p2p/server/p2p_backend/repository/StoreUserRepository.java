@@ -14,23 +14,28 @@ public class StoreUserRepository {
     }
 
     // READ
-    public StoreUser getStoreUser(String userId) throws Exception{
+    public StoreUser getStoreUser(String userId) throws Exception {
+        try {
+            DocumentSnapshot doc = firestore
+                    .collection("storeUsers")
+                    .document(userId)
+                    .get()
+                    .get();
 
-        DocumentSnapshot doc = firestore
-                .collection("storeUsers")
-                .document(userId)
-                .get()
-                .get();
+            if (!doc.exists()) {
+                System.out.println("StoreUser not found: " + userId);
+                return null;
+            }
 
-        if (!doc.exists()) {
-            System.out.println("StoreUser not found: " + userId);
-            return null;
+            StoreUser user = doc.toObject(StoreUser.class);
+            if (user == null) {
+                throw new IllegalAccessException("Failed to map StoreUser: " + userId);
+            }
+
+            return user;
+        } catch (Exception e) {
+            throw new Exception("Something went wrong while fetching StoreUser " + userId, e);
         }
-
-        StoreUser user = doc.toObject(StoreUser.class);
-
-        return user;
-
     }
 
     // DELETE
