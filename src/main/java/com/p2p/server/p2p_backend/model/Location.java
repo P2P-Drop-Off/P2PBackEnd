@@ -1,7 +1,6 @@
 package com.p2p.server.p2p_backend.model;
 
-import java.util.Arrays;
-import java.util.*;
+import java.util.List;
 
 public class Location {
     private String id;
@@ -15,7 +14,7 @@ public class Location {
     private String address;
     private String state;
     private String zip;
-    private String[] hours;
+    private List<String> hours;
 
 
     public Location(){};
@@ -120,11 +119,11 @@ public class Location {
     }
 
     // hours
-    public String[] getHours() {
+    public List<String> getHours() {
         return hours;
     }
 
-    public void setHours(String[] hours) {
+    public void setHours(List<String> hours) {
         this.hours = hours;
     }
 }

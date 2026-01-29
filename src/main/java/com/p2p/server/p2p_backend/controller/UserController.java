@@ -4,8 +4,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import com.p2p.server.p2p_backend.repository.UserRepository;
+import com.p2p.server.p2p_backend.service.UserService;
 import com.p2p.server.p2p_backend.model.User;
 
 @RestController
@@ -13,9 +16,11 @@ import com.p2p.server.p2p_backend.model.User;
 public class UserController {
 
     private final UserRepository repository;
+    private final UserService service;
 
-    public UserController(UserRepository repository) {
+    public UserController(UserRepository repository, UserService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @GetMapping("/{id}")
@@ -29,4 +34,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping("/post")
+    public ResponseEntity<User> newUser(@RequestBody User user) throws Exception {
+        User createdUser = service.createUser(user);
+        return ResponseEntity.ok(createdUser);
+    }
 }
+

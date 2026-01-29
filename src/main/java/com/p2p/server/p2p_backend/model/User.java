@@ -1,9 +1,11 @@
 package com.p2p.server.p2p_backend.model;
 
-import java.util.List;
 
+import java.util.List;
+import java.time.*;
 
 public class User {
+
     private String id;
 
     private String firstName;

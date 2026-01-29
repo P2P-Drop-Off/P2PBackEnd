@@ -13,36 +13,25 @@ public class LocationRepository {
         this.firestore = firestore;
     }
 
+    // READ
     public Location getLocation(String locationId) throws Exception {
-        try {
-            DocumentSnapshot doc = firestore
-                    .collection("locations")
-                    .document(locationId)
-                    .get()
-                    .get();
 
-            if (!doc.exists()) {
-                System.out.println("Location not found: " + locationId);
-                return null;
-            }
+        DocumentSnapshot doc = firestore
+                .collection("locations")
+                .document(locationId)
+                .get()
+                .get();
 
-            Location location = doc.toObject(Location.class);
-            if (location == null) {
-                throw new IllegalAccessException("Failed to map Location: " + locationId);
-            }
-
-            return location;
-        } catch (Exception e) {
-            throw new Exception("Something went wrong while fetching Location " + locationId, e);
+        if (!doc.exists()) {
+            System.out.println("Location not found: " + locationId);
+            return null;
         }
-    }
 
-    // DELETE
-    public void deleteLocation(String locationId) throws Exception{
-        try {
-            firestore.collection("locations").document(locationId).delete();
-        } catch (Exception e) {
-            throw new Exception("Failed to delete location with id: " + locationId, e);
-        }
+        Location location = doc.toObject(Location.class);
+
+        System.out.println("---- Got Item ----");
+        System.out.println("Name: " + location.getName() + " " + location.getAddress());
+
+        return doc.toObject(Location.class);
     }
 }

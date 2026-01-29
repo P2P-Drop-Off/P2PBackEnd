@@ -43,4 +43,19 @@ public class UserRepository {
             throw new Exception("Failed to delete user with id: " + userId, e);
         }
     }
+
+    // CREATE
+    public User createUser(User user) throws Exception {
+        DocumentReference docRef = firestore.collection("users").document();
+        String userId = docRef.getId();
+        user.setId(userId);
+        
+        docRef.set(user).get();
+        
+        System.out.println("---- Created User ----");
+        System.out.println("ID: " + userId);
+        System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
+        
+        return user;
+    }
 }
