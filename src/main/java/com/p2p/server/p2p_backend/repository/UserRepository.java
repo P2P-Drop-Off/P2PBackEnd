@@ -1,4 +1,5 @@
 package com.p2p.server.p2p_backend.repository;
+import com.google.api.core.ApiFuture;
 import com.p2p.server.p2p_backend.model.User;
 import com.google.cloud.firestore.*;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,6 @@ public class UserRepository {
         }
     }
 
-    // DELETE
     public void deleteUser(String userId) throws Exception{
         try {
             firestore.collection(User.PATH).document(userId).delete();
@@ -44,18 +44,26 @@ public class UserRepository {
         }
     }
 
-    // CREATE
     public User createUser(User user) throws Exception {
         DocumentReference docRef = firestore.collection(User.PATH).document();
         String userId = docRef.getId();
         user.setId(userId);
         
         docRef.set(user).get();
-        
+
         System.out.println("---- Created User ----");
         System.out.println("ID: " + userId);
         System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
         
         return user;
+    }
+
+    public void updateUser(User user) throws Exception{
+        ApiFuture<WriteResult> future = firestore
+                .collection(User.PATH)
+                .document(user.getId())
+                .set(user);
+        WriteResult result = future.get();
+        System.out.println("User " + user.getFirstName() + " updated fields.");
     }
 }
