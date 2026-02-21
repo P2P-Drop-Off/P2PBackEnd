@@ -3,6 +3,9 @@ package com.p2p.server.p2p_backend.model;
 import java.util.List;
 
 public class Location {
+
+    public static final String PATH = "locations";
+
     private String id;
     private StoreUser storeUser;
     private String name;

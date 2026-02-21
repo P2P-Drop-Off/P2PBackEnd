@@ -16,7 +16,6 @@ public class UserService {
     }
 
     public User createUser(User user) throws Exception {
-        // Set UTC timestamp as ISO 8601 string for Firestore
         String utcTimestamp = Instant.now().toString();
         user.setCreatedAt(utcTimestamp);
         
@@ -24,7 +23,7 @@ public class UserService {
     }
 
     public User getUser(String userId) throws Exception {
-        return null;
+        return repository.getUser(userId);
     }
 
     public Boolean verifyMarketplaceLink(String link, User user) {

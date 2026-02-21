@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.p2p.server.p2p_backend.repository.UserRepository;
 import com.p2p.server.p2p_backend.service.UserService;
 import com.p2p.server.p2p_backend.model.User;
 
@@ -23,6 +22,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> printUser(@PathVariable String id) throws Exception {
+
+        System.out.println("Hello");
+
         User user = userService.getUser(id);
 
         if (user == null) {

@@ -1,16 +1,18 @@
 package com.p2p.server.p2p_backend.model;
-import jakarta.persistence.*;
+import com.google.cloud.firestore.DocumentReference;
+
 import java.math.BigDecimal;
 
 public class Item {
+    public static final String PATH = "items";
 
     private String id;
 
-    private User seller;
+    private String seller;
     private String name;
     private String createdAt;
     private String description;
-    private Location store;
+    private String store;
     private String link;
     private String status;
     private String transactionId;
@@ -46,20 +48,20 @@ public class Item {
     }
 
     // seller (User)
-    public User getSeller() {
+    public String getSeller() {
         return seller;
     }
 
-    public void setSeller(User seller) {
+    public void setSeller(String seller) {
         this.seller = seller;
     }
 
     // store (Location)
-    public Location getStore() {
+    public String getStore() {
         return store;
     }
 
-    public void setStore(Location store) {
+    public void setStore(String store) {
         this.store = store;
     }
 
@@ -99,12 +101,14 @@ public class Item {
         this.transactionId = transactionId;
     }
 
-    // transactionId
+    // Price
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setTransactionId(BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
+
+

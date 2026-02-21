@@ -6,7 +6,7 @@ import java.time.*;
 import java.util.Map;
 
 public class User {
-    public static final String PATH = "tasks";
+    public static final String PATH = "users";
 
     private String id;
 

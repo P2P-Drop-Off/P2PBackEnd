@@ -3,6 +3,7 @@ package com.p2p.server.p2p_backend.model;
 import java.util.List;
 
 public class StoreUser {
+    public static final String PATH = "storeUsers";
     private String id;
 
     private String firstName;

@@ -7,6 +7,8 @@ import com.p2p.server.p2p_backend.model.User;
 import com.p2p.server.p2p_backend.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class ItemService {
 
@@ -16,19 +18,14 @@ public class ItemService {
         this.repository = repository;
     }
 
-    public void createItem() {
-        /*
-            Assumption:
-                1) The controller should verify C2C link with verifyMarketPlaceLink
-         */
+    public Item createItem(Item item) throws Exception{
+        String utcTimestamp = Instant.now().toString();
+        item.setCreatedAt(utcTimestamp);
+        return repository.createItem(item);
     }
 
-    public Item getItem(String itemId) throws Exception{
-        try {
-            return repository.getItem(itemId);
-        } catch (Exception e) {
-            throw e;
-        }
+    public Item getItem(String itemId) throws Exception {
+        return repository.getItem(itemId);
     }
 
     public String generateItemLink(StoreUser dropOffStore) {

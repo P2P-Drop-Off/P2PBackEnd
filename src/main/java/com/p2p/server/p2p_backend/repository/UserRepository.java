@@ -1,8 +1,12 @@
 package com.p2p.server.p2p_backend.repository;
 import com.google.api.core.ApiFuture;
+import com.p2p.server.p2p_backend.exceptions.ItemNotFoundException;
+import com.p2p.server.p2p_backend.model.Item;
 import com.p2p.server.p2p_backend.model.User;
 import com.google.cloud.firestore.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.concurrent.ExecutionException;
 
 @Repository
 public class UserRepository {
@@ -20,19 +24,15 @@ public class UserRepository {
                     .get().get();
 
             if (!doc.exists()) {
-                System.out.println("User not found: " + userId);
-                return null;
+                throw new ItemNotFoundException(userId);
             }
+            return doc.toObject(User.class);
 
-            User user = doc.toObject(User.class);
-
-            if (user == null) {
-                throw new IllegalAccessException("Failed to map User: " + userId);
-            }
-
-            return user;
-        } catch (Exception e) {
-            throw new Exception("Something went wrong while fetching User " + userId, e);
+        } catch (InterruptedException e) {
+            //Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while fetching user", e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Failed to fetch user from database", e);
         }
     }
 
@@ -48,13 +48,7 @@ public class UserRepository {
         DocumentReference docRef = firestore.collection(User.PATH).document();
         String userId = docRef.getId();
         user.setId(userId);
-        
         docRef.set(user).get();
-
-        System.out.println("---- Created User ----");
-        System.out.println("ID: " + userId);
-        System.out.println("Name: " + user.getFirstName() + " " + user.getLastName());
-        
         return user;
     }
 

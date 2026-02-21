@@ -9,7 +9,6 @@ import com.p2p.server.p2p_backend.model.Item;
 import com.p2p.server.p2p_backend.dto.response.CreateItemResponse;
 import com.p2p.server.p2p_backend.dto.request.CreateItemRequest;
 
-
 @RestController
 @RequestMapping("/items")
 public class ItemController {
@@ -21,13 +20,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItem(@PathVariable String id) throws Exception {
-
         Item item = itemService.getItem(id);
-
-        if (item == null) {
-            return ResponseEntity.notFound().build();
-        }
-
         return ResponseEntity.ok(item);
     }
 
