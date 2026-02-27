@@ -17,7 +17,7 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    // Get item by ID
+   // Get item by ID
     public GetItemResponse getItemById(String id) {
         try {
             Item item = itemRepository.getItem(id);
@@ -27,7 +27,6 @@ public class ItemService {
             throw new RuntimeException("Failed to fetch item: " + id, e);
         }
     }
-
     // Create new item
     public CreateItemResponse createItem(CreateItemRequest request) {
         try {

@@ -16,7 +16,7 @@ public class ItemController {
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
-
+    
     // GET item by ID
     @GetMapping("/{id}")
     public GetItemResponse getItemById(@PathVariable String id) {
