@@ -17,6 +17,11 @@ public class Item {
     private String status;
     private String transactionId;
     private BigDecimal price;
+    private String title;
+    private String image;
+    private String location;
+    private int views;
+    private int comments;
 
     public Item(){}
 
@@ -28,6 +33,21 @@ public class Item {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public int getViews() { return views; }
+    public void setViews(int views) { this.views = views; }
+
+    public int getComments() { return comments; }
+    public void setComments(int comments) { this.comments = comments; }
 
     // name
     public String getName() {
