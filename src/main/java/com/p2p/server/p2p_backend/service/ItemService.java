@@ -1,60 +1,78 @@
 package com.p2p.server.p2p_backend.service;
 
-import com.p2p.server.p2p_backend.exceptions.ItemNotFoundException;
 import com.p2p.server.p2p_backend.model.Item;
-import com.p2p.server.p2p_backend.model.StoreUser;
-import com.p2p.server.p2p_backend.model.User;
 import com.p2p.server.p2p_backend.repository.ItemRepository;
+import com.p2p.server.p2p_backend.dto.request.CreateItemRequest;
+import com.p2p.server.p2p_backend.dto.response.CreateItemResponse;
+import com.p2p.server.p2p_backend.dto.response.GetItemResponse;
+import com.p2p.server.p2p_backend.exceptions.ItemNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 @Service
 public class ItemService {
 
-    private final ItemRepository repository;
+    private final ItemRepository itemRepository;
 
-    public ItemService(ItemRepository repository){
-        this.repository = repository;
+    public ItemService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 
-    public Item createItem(Item item) throws Exception{
-        String utcTimestamp = Instant.now().toString();
-        item.setCreatedAt(utcTimestamp);
-        return repository.createItem(item);
+    // Get item by ID
+    public GetItemResponse getItemById(String id) {
+        try {
+            Item item = itemRepository.getItem(id);
+            if (item == null) throw new ItemNotFoundException("Item not found: " + id);
+            return new GetItemResponse(item);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch item: " + id, e);
+        }
     }
 
-    public Item getItem(String itemId) throws Exception {
-        return repository.getItem(itemId);
+    // Create new item
+    public CreateItemResponse createItem(CreateItemRequest request) {
+        try {
+            Item item = new Item();
+            item.setTitle(request.getTitle());
+            item.setDescription(request.getDescription());
+            item.setPrice(request.getPrice());
+            item.setImage(request.getImage());
+            item.setLocation(request.getLocation());
+            item.setViews(0);
+            item.setComments(0);
+            item.setStatus("active");
+
+            Item saved = itemRepository.createItem(item);
+            return new CreateItemResponse(saved.getId(), saved.getTitle());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create item", e);
+        }
     }
 
-    public Item updateItem(Item item) throws Exception {
-        return repository.updateItem(item);
+    // Update existing item
+    public CreateItemResponse updateItem(String id, CreateItemRequest request) {
+        try {
+            Item item = itemRepository.getItem(id);
+            if (item == null) throw new ItemNotFoundException("Item not found: " + id);
+
+            item.setTitle(request.getTitle());
+            item.setDescription(request.getDescription());
+            item.setPrice(request.getPrice());
+            item.setImage(request.getImage());
+            item.setLocation(request.getLocation());
+
+            Item updated = itemRepository.updateItem(item);
+            return new CreateItemResponse(updated.getId(), updated.getTitle());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update item: " + id, e);
+        }
     }
 
-    public void deleteItem(String itemId) throws Exception {
-        repository.deleteItem(itemId);
-    }
-
-    public String generateItemLink(StoreUser dropOffStore) {
-        // Use:
-        //  Called when user needs to send a transaction link to the buyer.
-        //  Assumption:
-        //      1) user already has been served getNearbyStores() and picks one
-        //      2) user already has created the Item
-        //  Future calls for Item Link should be done through other controller>service calls.
-        return "";
-    }
-
-    public String generateDropOffCode(){
-        return "";
-    }
-
-    public void changeItemLocation() {
-        // Called when the Buyer requests Seller to change sale location (outside of app)
-    }
-
-    public void confirmIntentToBuy() {
-        // Called when the Buyer requests user
+    // Delete item
+    public void deleteItem(String id) {
+        try {
+            itemRepository.deleteItem(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete item: " + id, e);
+        }
     }
 }

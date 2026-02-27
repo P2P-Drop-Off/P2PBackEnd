@@ -8,32 +8,35 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class CreateItemRequest {
-    @NotBlank
-    private String id;
 
     @NotBlank
-    private User seller;
+    private String title;
 
-    @NotBlank
+    private String description;
+
+    @NotNull
     @Positive
     private BigDecimal price;
 
     @NotBlank
-    private String name;
+    private String image;
 
     @NotBlank
-    private String createdAt;
+    private String location;
 
-    @NotBlank
-    private Location store;
+    // Getters and Setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    @NotBlank
-    private String link;
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    @NotBlank
-    private String status;
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
-    private String description;
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 
-    private String transactionId;
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 }
